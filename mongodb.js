@@ -2,9 +2,14 @@
 
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
+const ObjectID = mongodb.ObjectID;
+
+// const { MongoClient, ObjectID } = require('mongodb');
+
 
 const connectionURL = 'mongodb://127.0.0.1:27017';
 const databaseName = 'task-manager';
+
 
 MongoClient.connect(connectionURL, {
     useNewUrlParser: true
@@ -12,46 +17,21 @@ MongoClient.connect(connectionURL, {
     if (error) {
         return console.log('Something bad happened.');
     }
-    const db = client.db(databaseName);
-    // db.collection('users').insertOne({
-    //     name: 'Harley',
-    //     age: 44
-    // }, (error, result) => {
-    //     if(error) {
-    //         return console.log('Unable to insert user');
-    //     }
-    //     console.log(result.ops);
-    // });
-    // db.collection('users').insertMany( [
-    //     {
-    //         name: 'Mevs',
-    //         age: 22
-    //     }, {
-    //         name: 'Gunther',
-    //         age: 32
-    //     }
-    // ], (error, result) => {
-    //     if(error) { return console.log('Unable to insert documents.');}
-    //     console.log(result.ops);
-    // } );
 
-    db.collection('tasks').insertMany( [
-        {
-            name: 'Bake a cake',
-            completed: false
-        },
-        {
-            name: 'Rake leafs',
-            completed: false
-        },
-        {
-            name: 'Write a novella',
-            completed: true
-        }
-    ], (error, result) => {
+    const db = client.db(databaseName);
+
+    db.collection('tasks').findOne( {_id: new ObjectID('5d2244938b22d50af4b9e8ad')},
+    (error, doc) => {
         if (error) {
-            return console.log('Unable to insert documents');
+            return console.log('Oh snap! Unable to fetch document.');
         }
-        console.log(result.ops);
+        console.log(doc);
+    });
+
+    db.collection('tasks').find( { completed: false}).toArray((error, array) => {
+        if (error) {
+            console.log('Unable to get tasks.');
+        }
+        console.log(array);
     });
 });
