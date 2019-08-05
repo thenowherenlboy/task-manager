@@ -22,7 +22,7 @@ router.post('/users', async (req, res) => {
         res.status(201).send({user, token});
         
     } catch (e) {
-        console.log('Something stinketh in the land of Denmark')
+        // console.log('Something stinketh in the land of Denmark')
         res.status(400).send(e);
     }
 });
